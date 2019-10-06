@@ -15,9 +15,10 @@ export default class Todo extends Component {
     }
     
     this.todo = [
-        {id:1, items:'coding'},
-        {id:2, items:'coding'},
-        {id:3, items:'coding'}
+        {id:1, items:'Eat'},
+        {id:2, items:'Pray'},
+        {id:3, items:'Coding'},
+        {id:4, items:'Shopping'}
     ]
     }
 
