@@ -28,6 +28,11 @@ export default class Todo extends Component {
         this.textInputRef.clear();
     }
 
+    handleRemove (id) {
+        this.todo.splice(id, 1);
+        this.setState({arrayHolder: [...this.todo] });
+    }
+
     render() {
     // const todo = ['work', 'swim', 'study', 'sleep', 'run']
       return (
@@ -46,10 +51,9 @@ export default class Todo extends Component {
                 data={this.todo}
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => 
-                <View   style={style.list}>
+                <View style={style.list}>
                 <Text style={style.textList}> {item.items} </Text>
-                {/* <Button title="X" onPress={(id) => this.remove_Selected_Item(id)} /> */}
-           
+                <Button title="X" styles={style.btndelete} onPress={(id) => this.handleRemove(id)} />
                 </View>
             }
             />
@@ -67,10 +71,13 @@ const style = StyleSheet.create({
     },
 
     todoInput: {
-        
+        flexDirection: 'row',
+        margin:4,
+        justifyContent:'center'
     },
 
     inputStyle: {
+        width: "90%",
         marginHorizontal:4,
         backgroundColor:'white',
         borderRadius:5
@@ -78,7 +85,7 @@ const style = StyleSheet.create({
     },
 
     addButton: {
-
+        width: "10%"
     },
 
     todoContent:{
@@ -86,13 +93,20 @@ const style = StyleSheet.create({
     },
 
     list: {
+        flexDirection: 'row',
         backgroundColor:'white',
-        borderRadius:3,
+        borderRadius:8,
         margin:6,
-        padding:8
+        padding:8,
+        justifyContent:'space-between',
     },
 
     textList: {
         fontSize: 16
+    },
+
+    btndelete: {
+        width:'20%',
+        color:'red'
     }
 })
