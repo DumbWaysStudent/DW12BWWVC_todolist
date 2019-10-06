@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {Text, View, StyleSheet, TextInput, Button, FlatList} from 'react-native';
 
-
 export default class Todo extends Component {
 
     constructor() {
