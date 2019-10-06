@@ -8,14 +8,13 @@ export default class Todo extends Component {
         <View>
             {todo.map((todo, index) => {
                 return (
-                    <Text key={index} style={style.border} > {todo} </Text>
+                    <Text key={index} style={style.border}> {todo} </Text>
                 )
             })}
         </View>
       );
     }
   }
-
   
 const style = StyleSheet.create({
 border: {
