@@ -9,31 +9,22 @@ export default class TodoList extends Component {
         super();
         
         this.state = {
-            add:'Add',
+            // btnadd:`${this.state.btnValue ? "Edit" : "Add"}`,
             text:'New Todo',
-            arrayHolder:[],
             inputData:null,
             todo: [
                 {id:1, items:'Eat', status:'false'},
                 {id:2, items:'Pray', status:'false'},
                 {id:3, items:'Coding', status:'false'},
                 {id:4, items:'Shopping', status:'false'}
-            ]
+            ],
+            updateId: '',
+            btnValue : false
+            
         }
     }
 
-    // itemList = ({title}) => {
-    //     return (
-    //         <View style={style.list}> 
-    //             <Text style={style.textList}> {title} </Text>
-    //         </View>
-    //     )
-    // }
-
     handleAdd = () => {
-        // this.todo.push({items: this.state.inputHolder})
-        // this.setState({ arrayHolder: [...this.todo] })
-        // this.textInputRef.clear();
         const data = this.state.todo
         const dataId = data.length + 1
         const inputData = {
@@ -46,6 +37,37 @@ export default class TodoList extends Component {
         // this.setState({inputData : ''})
         this.empty.clear()
         console.log(data)
+    }
+
+    handleUpAdd = () => {
+        if (!this.state.inputData) {
+            return;
+        }
+        const data = this.state.todo
+        if (this.state.btnValue === false) {
+            const dataId = data.length + 1
+            const inputData = {
+                id : dataId,
+                items: this.state.inputData,
+                status: 'false'
+            };
+            data.push(inputData)
+            this.setState({data : inputData, inputData : ''})
+            this.empty.clear()
+            console.log(data)
+        } else {
+            data.map( item => {
+                if (this.state.updateId === item.id) {
+                    item.items = this.state.inputData
+                }
+                return item;
+            })
+        
+            this.setState({
+                btnValue: false,
+            })
+        }
+        this.empty.clear();
     }
 
     handleRemove = (id) => {
@@ -70,6 +92,21 @@ export default class TodoList extends Component {
         })
     }
 
+    changeToEdit = (id) => {
+        const items = this.state.todo
+        items.map( item => {
+            if (id === item.id) {
+                this.setState({
+                    inputData : item.items,
+                    btnValue : true,
+                    updateId : id
+                 })
+            } return item;
+        })
+    }
+
+
+
     render() {
       return (
         <View style={style.container}>
@@ -78,7 +115,7 @@ export default class TodoList extends Component {
                 ref={ref => this.empty = ref}
                 placeholder={this.state.text} 
                 style={style.inputStyle} onChangeText={data => this.setState({inputData: data})} />
-                <Button title={this.state.add} style={style.addButton} onPress={this.handleAdd} />
+                <Button title={this.state.btnValue ? "Edit" : "Add"} style={style.addButton} onPress={this.handleUpAdd} />
             </View>
             <View>
             <FlatList
@@ -90,13 +127,20 @@ export default class TodoList extends Component {
                     <CheckBox 
                         checked = {item.status} 
                         onPress = {()=> this.checkItem(item.id)}
-                        color = "green"
+                        color = "white"
                     />
                     </ListItem>
                     <Text style={style.textList}> {item.items} </Text>
-                    <TouchableOpacity style={style.btndelete} onPress={() => this.handleRemove(item.id)}>
-                        <Icon name="trash"/>
+
+                    <View style={style.btnboth}>  
+                    <TouchableOpacity style={style.btnupdate} >
+                        <Icon type="FontAwesome" name="edit" onPress={() => this.changeToEdit(item.id)}  />
                     </TouchableOpacity>
+
+                    <TouchableOpacity style={style.btndelete} onPress={() => this.handleRemove(item.id)}>
+                        <Icon type="FontAwesome" name="trash"/>
+                    </TouchableOpacity>
+                    </View>
                 </View> 
                 }
             />
@@ -128,7 +172,7 @@ const style = StyleSheet.create({
     },
 
     list: {
-        backgroundColor:'white',
+        backgroundColor:'#6e9eeb',
         borderRadius:3,
         marginVertical:5,
         marginHorizontal:13,
@@ -139,11 +183,26 @@ const style = StyleSheet.create({
     },
 
     textList: {
-        fontSize: 16
+        fontSize: 20,
+        textTransform:'uppercase',
+        fontWeight:'bold'
+    },
+
+    btnboth: {
+        flexDirection: 'row',
+        justifyContent:'space-between'
     },
 
     btndelete: {
-        backgroundColor : 'salmon',
+        backgroundColor : '#f25500',
+        borderRadius : 10,
+        alignItems : 'center',
+        padding : 8,
+        height : 40
+    },
+
+    btnupdate: {
+        backgroundColor : '#42c217',
         borderRadius : 10,
         alignItems : 'center',
         padding : 8,
