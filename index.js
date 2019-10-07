@@ -7,6 +7,7 @@ import App from './App';
 import Todo from './src/Todo';
 import Todo2 from './src/Todo2';
 import MakeTodo from './src/MakeTodo';
+import DeleteTodo from './src/DeleteTodo';
 import {name as appName} from './app.json';
 
-AppRegistry.registerComponent(appName, () => MakeTodo);
+AppRegistry.registerComponent(appName, () => DeleteTodo);

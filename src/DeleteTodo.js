@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import {Text, View, StyleSheet, TextInput, Button, FlatList} from 'react-native';
+import {Text, View, StyleSheet, TextInput, Button, FlatList, TouchableOpacity} from 'react-native';
+import {Icon} from 'native-base';
 
 
-export default class Todo extends Component {
+export default class DeleteTodo extends Component {
 
     constructor() {
         super();
@@ -33,17 +34,26 @@ export default class Todo extends Component {
         // this.todo.push({items: this.state.inputHolder})
         // this.setState({ arrayHolder: [...this.todo] })
         // this.textInputRef.clear();
-        const data = this.state.todo;
-        const dataId = data.length + 1;
+        const data = this.state.todo
+        const dataId = data.length + 1
         const inputData = {
             id : dataId,
             items: this.state.inputData
         };
         data.push(inputData)
-        this.setState({data : inputData})
+        this.setState({data : inputData, inputData : ''})
+        // this.setState({inputData : ''})
         this.empty.clear()
         console.log(data)
+    }
 
+    handleRemove = (id) => {
+        const data = this.state.todo
+        const newData = data.filter(dataref => dataref.id !== id)
+        console.log(newData)
+        this.setState({
+            todo : newData
+        })
     }
 
     render() {
@@ -62,9 +72,10 @@ export default class Todo extends Component {
                 keyExtractor= { (item) => item.id }
                 renderItem={({ item }) => 
                 <View   style={style.list}>
-                <Text style={style.textList}> {item.items} </Text>
-                {/* <Button title="X" onPress={(id) => this.remove_Selected_Item(id)} /> */}
-           
+                    <Text style={style.textList}> {item.items} </Text>
+                    <TouchableOpacity style={style.btndelete} onPress={() => this.handleRemove(item.id)}>
+                        <Icon name="trash"/>
+                    </TouchableOpacity>
                 </View> 
                 }
             />
@@ -100,10 +111,21 @@ const style = StyleSheet.create({
         borderRadius:3,
         marginVertical:5,
         marginHorizontal:13,
-        padding:9
+        padding:9,
+        flexDirection: 'row',
+        justifyContent:'space-between'
+
     },
 
     textList: {
         fontSize: 16
+    },
+
+    btndelete: {
+        backgroundColor : 'salmon',
+        borderRadius : 10,
+        alignItems : 'center',
+        padding : 8,
+        height : 40
     }
 })
