@@ -3,7 +3,7 @@ import {Text, View, StyleSheet, TextInput, Button, FlatList, TouchableOpacity} f
 import {Icon} from 'native-base';
 
 
-export default class DeleteTodo extends Component {
+export default class TodoList extends Component {
 
     constructor() {
         super();
