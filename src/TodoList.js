@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {Text, View, StyleSheet, TextInput, Button, FlatList, TouchableOpacity} from 'react-native';
-import {Icon} from 'native-base';
+import {Icon, ListItem, CheckBox} from 'native-base';
 
 
-export default class DeleteTodo extends Component {
+export default class TodoList extends Component {
 
     constructor() {
         super();
@@ -14,10 +14,10 @@ export default class DeleteTodo extends Component {
             arrayHolder:[],
             inputData:null,
             todo: [
-                {id:1, items:'Eat'},
-                {id:2, items:'Pray'},
-                {id:3, items:'Coding'},
-                {id:4, items:'Shopping'}
+                {id:1, items:'Eat', status:'false'},
+                {id:2, items:'Pray', status:'false'},
+                {id:3, items:'Coding', status:'false'},
+                {id:4, items:'Shopping', status:'false'}
             ]
         }
     }
@@ -38,7 +38,8 @@ export default class DeleteTodo extends Component {
         const dataId = data.length + 1
         const inputData = {
             id : dataId,
-            items: this.state.inputData
+            items: this.state.inputData,
+            status: 'false'
         };
         data.push(inputData)
         this.setState({data : inputData, inputData : ''})
@@ -51,6 +52,19 @@ export default class DeleteTodo extends Component {
         const data = this.state.todo
         const newData = data.filter(dataref => dataref.id !== id)
         console.log(newData)
+        this.setState({
+            todo : newData
+        })
+    }
+
+    checkItem = (id) => {
+        const data = this.state.todo
+        const newData = data.map(item => {
+            if (id === item.id) {
+                item.status = !item.status
+            } return item;
+        })
+
         this.setState({
             todo : newData
         })
@@ -72,6 +86,13 @@ export default class DeleteTodo extends Component {
                 keyExtractor= { (item) => item.id }
                 renderItem={({ item }) => 
                 <View   style={style.list}>
+                    <ListItem > 
+                    <CheckBox 
+                        checked = {item.status} 
+                        onPress = {()=> this.checkItem(item.id)}
+                        color = "green"
+                    />
+                    </ListItem>
                     <Text style={style.textList}> {item.items} </Text>
                     <TouchableOpacity style={style.btndelete} onPress={() => this.handleRemove(item.id)}>
                         <Icon name="trash"/>
