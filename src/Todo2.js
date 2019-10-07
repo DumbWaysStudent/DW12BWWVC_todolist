@@ -10,7 +10,8 @@ export default class Todo extends Component {
         add:'Add',
         text:'New Todo',
         arrayHolder:[],
-        inputHolder:null
+        inputHolder:null,
+        
     }
     
     this.todo = [
